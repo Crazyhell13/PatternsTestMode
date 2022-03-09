@@ -21,10 +21,7 @@ public class DataGenerator {
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
-    public static class Registration {
-        private Registration() {
-        }
-    }
+
     private static void makeRequest(RegistrationInfo registrationInfo) {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
@@ -40,19 +37,15 @@ public class DataGenerator {
     public static String getRandomPassword() {
         return faker.internet().password();
     }
-    public static RegistrationInfo getActiveUser() {
-        RegistrationInfo registrationInfo = new RegistrationInfo(getRandomLogin(), getRandomPassword(), "active");
-        makeRequest(registrationInfo);
-        return registrationInfo;
-    }
-    public static RegistrationInfo getBlockedUser() {
-        RegistrationInfo registrationInfo = new RegistrationInfo(getRandomLogin(), getRandomPassword(), "blocked");
+
+    public static RegistrationInfo getRegisteredUser(String status) {
+        RegistrationInfo registrationInfo = new RegistrationInfo(getRandomLogin(), getRandomPassword(),status);
         makeRequest(registrationInfo);
         return registrationInfo;
     }
     public static RegistrationInfo getInvalidPasswordUser(String status) {
         String login = getRandomLogin();
-        makeRequest(new RegistrationInfo(login, getRandomPassword(), status));
+        makeRequest(new RegistrationInfo(login, getRandomPassword(),status));
         return new RegistrationInfo(login, getRandomPassword(), status);
     }
     public static RegistrationInfo getInvalidLoginUser(String status) {
